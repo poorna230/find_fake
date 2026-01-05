@@ -137,7 +137,7 @@ const Index = () => {
         {/* Footer */}
         <footer className="mt-16 text-center text-sm text-muted-foreground">
           <p>
-            TRUTHLENS — Powered by Advanced Multimodal AI
+            FINDFAKE — Powered by Advanced Multimodal AI
           </p>
           <p className="mt-1 text-xs">
             Detects fake text, manipulated images, deepfake videos, fraudulent documents, and synthetic audio

@@ -14,7 +14,7 @@ export function Header() {
             <Eye className="w-5 h-5 text-accent absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           </div>
           <h1 className="font-display text-4xl md:text-5xl font-bold gradient-text tracking-wider">
-            TRUTHLENS
+            FINDFAKE
           </h1>
         </div>
 

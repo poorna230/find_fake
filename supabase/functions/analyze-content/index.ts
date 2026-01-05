@@ -77,7 +77,7 @@ serve(async (req) => {
       mimeType 
     } = await req.json();
 
-    console.log(`[TRUTHLENS] Starting ${type} analysis...`);
+    console.log(`[FINDFAKE] Starting ${type} analysis...`);
 
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY is not configured');
@@ -108,13 +108,13 @@ serve(async (req) => {
         throw new Error(`Unknown content type: ${type}`);
     }
 
-    console.log(`[TRUTHLENS] Analysis complete: ${result.verdict} (${result.confidence}%)`);
+    console.log(`[FINDFAKE] Analysis complete: ${result.verdict} (${result.confidence}%)`);
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error: unknown) {
-    console.error('[TRUTHLENS] Analysis error:', error);
+    console.error('[FINDFAKE] Analysis error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
     return new Response(
@@ -131,7 +131,7 @@ serve(async (req) => {
 // ============ ANALYSIS FUNCTIONS ============
 
 async function analyzeText(text: string) {
-  const systemPrompt = `You are TRUTHLENS, an expert misinformation and AI-generated content detector. 
+  const systemPrompt = `You are FINDFAKE, an expert misinformation and AI-generated content detector. 
 You analyze text for authenticity with forensic precision. Your analysis covers:
 
 1. FACTUAL ACCURACY: Cross-reference claims against known facts. Flag unverifiable or false claims.
@@ -167,7 +167,7 @@ async function analyzeUrl(url: string) {
     domain = url;
   }
 
-  const systemPrompt = `You are TRUTHLENS, a cybersecurity and domain analysis expert.
+  const systemPrompt = `You are FINDFAKE, a cybersecurity and domain analysis expert.
 You evaluate URLs and domains for credibility and potential threats.
 
 ANALYSIS FRAMEWORK:
@@ -197,7 +197,7 @@ Evaluate the domain reputation and URL safety.`;
 }
 
 async function analyzeImage(base64: string, mimeType: string) {
-  const systemPrompt = `You are TRUTHLENS, an expert in detecting AI-generated and manipulated images.
+  const systemPrompt = `You are FINDFAKE, an expert in detecting AI-generated and manipulated images.
 You use advanced visual forensics to determine image authenticity.
 
 DETECTION FRAMEWORK:
@@ -247,7 +247,7 @@ async function analyzeVideo(frames: string[]) {
     };
   }
 
-  const systemPrompt = `You are TRUTHLENS, an expert in deepfake video detection and video forensics.
+  const systemPrompt = `You are FINDFAKE, an expert in deepfake video detection and video forensics.
 You analyze video frames for signs of manipulation or AI generation.
 
 TEMPORAL ANALYSIS (across frames):
@@ -282,7 +282,7 @@ Analyze all ${frames.length} frames together for temporal patterns.`;
 }
 
 async function analyzeDocument(base64: string, fileName: string, mimeType: string) {
-  const systemPrompt = `You are TRUTHLENS, an expert in document forensics and authenticity verification.
+  const systemPrompt = `You are FINDFAKE, an expert in document forensics and authenticity verification.
 You detect forged, tampered, and fraudulent documents.
 
 DOCUMENT FORENSICS:
@@ -334,7 +334,7 @@ Check for forgery, tampering, and content credibility.`;
 }
 
 async function analyzeAudio(base64: string, fileName: string, mimeType: string) {
-  const systemPrompt = `You are TRUTHLENS, an expert in audio forensics and voice deepfake detection.
+  const systemPrompt = `You are FINDFAKE, an expert in audio forensics and voice deepfake detection.
 You analyze audio for signs of synthetic voice, cloning, or manipulation.
 
 AUDIO FORENSICS FRAMEWORK:
@@ -459,7 +459,7 @@ async function callAIWithMultipleImages(systemPrompt: string, userPrompt: string
 async function handleAIResponse(response: Response) {
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[TRUTHLENS] AI Gateway error:', response.status, errorText);
+    console.error('[FINDFAKE] AI Gateway error:', response.status, errorText);
     
     if (response.status === 429) {
       throw new Error('Rate limit exceeded. Please try again in a moment.');
@@ -479,7 +479,7 @@ async function handleAIResponse(response: Response) {
       const result = JSON.parse(toolCall.function.arguments);
       return validateAndNormalizeResult(result);
     } catch (e) {
-      console.error('[TRUTHLENS] Failed to parse tool response:', e);
+      console.error('[FINDFAKE] Failed to parse tool response:', e);
     }
   }
   
@@ -492,7 +492,7 @@ async function handleAIResponse(response: Response) {
         const result = JSON.parse(jsonMatch[0]);
         return validateAndNormalizeResult(result);
       } catch (e) {
-        console.error('[TRUTHLENS] Failed to parse content JSON:', e);
+        console.error('[FINDFAKE] Failed to parse content JSON:', e);
       }
     }
   }
